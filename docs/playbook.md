@@ -44,7 +44,13 @@ $ docker ps
 ### Step 3: 触发CI workflow 
 提交并push你的Dockerfile。你应该会在你的repo->Actions里看到一条被触发的流水线。
 ```shell
-git add .
+        env:
+          REGISTRY: ${{ steps.aws-auth.outputs.registry }}
+          REPOSITORY: devopsgirl2023/hello-ops-girl
+          IMAGE_TAG: ${{ github.sha }}-hmj
+        run: |
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 git commit -m "Added somthing new" 
 git push origin main
 ```
